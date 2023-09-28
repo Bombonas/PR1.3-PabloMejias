@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.FileNotFoundException;
 
-public class PR130mainPersonesHashmap implements Serializable{
+public class PR130mainPersonesHashmap{
     public static void main(String[] args) {
         HashMap<String, Integer> hashMap = new HashMap<String,Integer>();
         hashMap.put("Pablo", 21);
