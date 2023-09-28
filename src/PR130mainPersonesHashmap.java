@@ -1,11 +1,13 @@
 import java.util.HashMap;
+import java.util.Map;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.io.IOException;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
-import java.io.FileNotFoundException;
+
 
 public class PR130mainPersonesHashmap{
     public static void main(String[] args) {
@@ -18,21 +20,23 @@ public class PR130mainPersonesHashmap{
 
         try{
             FileOutputStream fos = new FileOutputStream("PR130persones.dat");
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(hashMap);
-            oos.close();
+            DataOutputStream dos = new DataOutputStream(fos);
+
+            for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
+                dos.writeUTF(entry.getKey());
+                dos.writeInt(entry.getValue());
+            }
             fos.close();
-            
-            FileInputStream is = new FileInputStream("PR130persones.dat");
-            ObjectInputStream ois = new ObjectInputStream(is);
-            HashMap<String, Integer> nouHasMap = (HashMap<String, Integer>) ois.readObject();
+            dos.close();
 
-            System.out.println(nouHasMap);
-            ois.close();
-            is.close();
+            FileInputStream fin = new FileInputStream("PR130persones.dat");
+            DataInputStream dis = new DataInputStream(fin);
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            for (int i=0; i< hashMap.size(); ++i){
+                System.out.print(dis.readUTF() + ", ");
+                System.out.println(dis.readInt());
+            }
+
         }catch (IOException e) { e.printStackTrace(); }
     }
 }
