@@ -37,6 +37,9 @@ public class PR130mainPersonesHashmap{
                 System.out.println(dis.readInt());
             }
 
+            fin.close();
+            dis.close();
+
         }catch (IOException e) { e.printStackTrace(); }
     }
 }
