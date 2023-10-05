@@ -50,7 +50,7 @@ public class PR134mainRandomAcces {
                         in.nextLine();
                         break;
                     case 4: 
-                        for(int i = 0; i<raf.length(); i+=ID_SIZE*2+NAME_SIZE){
+                        for(int i = 0; i<raf.length(); i+=ID_SIZE*2+NAME_SIZE*CHAR_SIZE){
                             System.out.println(i);
                             raf.seek(i);
                             int idPrint = raf.readInt();
@@ -83,7 +83,7 @@ public class PR134mainRandomAcces {
     }
 
     private static long getSeekPosition(int id) {
-        return (id) * (ID_SIZE*2 + NAME_SIZE );
+        return (id) * (ID_SIZE*2 + NAME_SIZE*CHAR_SIZE );
     }
 
     public static void afegirAlumne(RandomAccessFile raf, int id, String nom, float nota) throws Exception {
@@ -94,7 +94,7 @@ public class PR134mainRandomAcces {
             nom = nom.substring(0, NAME_SIZE);
         }
         nom = String.format("%1$-" + NAME_SIZE + "s", nom);
-
+        System.out.println(nom.length());
         raf.writeChars(nom);
 
         raf.writeFloat(nota);
