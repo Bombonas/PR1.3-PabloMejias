@@ -25,6 +25,7 @@ public class PR134mainRandomAcces {
 
                 int opcio = Integer.valueOf(llegirLinia("Opció:"));
                 try {
+                    int id;
                     switch (opcio) {
                     case 1: 
                         System.out.println("Nom: ");
@@ -35,21 +36,32 @@ public class PR134mainRandomAcces {
                         afegirAlumne(raf, getId(raf), nom, nota);
                         break;
                     case 2: 
+                        System.out.println("Id: ");
+                        id = in.nextInt();
+                        System.out.println("Nota: ");
+                        float novaNota = in.nextFloat();
+                        actualitzarNota(raf, id, novaNota);
+                        in.nextLine();
                         break;
                     case 3: 
+                        System.out.println("Id: ");
+                        id = in.nextInt();
+                        System.out.println("Nota: " + consultarNota(raf, id));
+                        in.nextLine();
                         break;
                     case 4: 
-                        System.out.println(ID_SIZE*2+NAME_SIZE);
                         for(int i = 0; i<raf.length(); i+=ID_SIZE*2+NAME_SIZE){
+                            System.out.println(i);
                             raf.seek(i);
-                            raf.readInt();
+                            int idPrint = raf.readInt();
                             char[] chars = new char[NAME_SIZE];
                             for (int j = 0; j < NAME_SIZE; j++) {
-                                chars[i] = raf.readChar();
+                                chars[j] = raf.readChar();
                             }
-                            raf.readFloat();
-                            System.out.println(new String(chars).trim());
+                            float notaPrint =raf.readFloat();
+                            System.out.println(idPrint + " " + new String(chars).trim() + " " + notaPrint);
                         }
+                        System.out.println("salgo for");
                         break;
                     // Adapta aquí les altres classes de l’exercici (PR122cat…)
                     case 100: running = false; break;
@@ -71,7 +83,7 @@ public class PR134mainRandomAcces {
     }
 
     private static long getSeekPosition(int id) {
-        return (id - 1) * (ID_SIZE*2 + NAME_SIZE );
+        return (id) * (ID_SIZE*2 + NAME_SIZE );
     }
 
     public static void afegirAlumne(RandomAccessFile raf, int id, String nom, float nota) throws Exception {
@@ -89,7 +101,24 @@ public class PR134mainRandomAcces {
 
     }
 
+    public static void actualitzarNota(RandomAccessFile raf, int id, float novaNota) throws Exception {
+        System.out.println(novaNota);
+        raf.seek(getSeekPosition(id) + ID_SIZE + NAME_SIZE);
+        raf.writeFloat(novaNota);
+    }
+
+
+    public static float consultarNota(RandomAccessFile raf, int id) throws Exception {
+        raf.seek(getSeekPosition(id));
+        raf.readInt();
+        char[] chars = new char[NAME_SIZE];
+        for (int i = 0; i < NAME_SIZE; i++) {
+            chars[i] = raf.readChar();
+        }
+        return raf.readFloat();
+    }
+
     public static int getId(RandomAccessFile raf) throws IOException{
-        return (int) (raf.length()/ID_SIZE*2+NAME_SIZE);
+        return (int) (raf.length()/(ID_SIZE*2+NAME_SIZE));
     }
 }
